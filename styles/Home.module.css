@@ -23,7 +23,7 @@
 
 .row {
   display: grid;
-  grid-template-columns: 100px 100px 100px;
+  grid-template-columns: 100px 100px 100px 100px;
   font-size: 16px;
   margin-bottom: 1px;
   padding: 10px;
