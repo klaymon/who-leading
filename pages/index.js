@@ -105,7 +105,10 @@ export default function Home () {
         const color = leadingCandidate.last_name === 'Biden' ? 'blue' : 'red'
         return <div className={`${styles.row} ${styles[color]}`} key={record.state}><span>{record.state}</span> <span>{leadingCandidate.last_name}</span> <span>{record.leaderMarginVotes}</span> </div>
       })}
-      <a href='https://twitter.com/explodedsoda' target='_blank' rel='noopener noreferrer' className={styles.teeny}>@</a>
+      <div className={styles.teeny}>
+        <a href='https://twitter.com/explodedsoda' target='_blank' rel='noopener noreferrer' >@</a>
+        <div>data sourced from <a href='https://static01.nyt.com/elections-assets/2020/data/api/2020-11-03/votes-remaining-page/national/president.json' target='_blank' rel='noopener noreferrer' >unofficial API</a> powering the NYT's election site</div>
+      </div>
     </div>
   )
 }
