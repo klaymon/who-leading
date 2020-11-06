@@ -6,7 +6,7 @@ const GA_INDEX = 10
 const NV_INDEX = 33
 const PA_INDEX = 38
 const STATE_INDEXES = [AZ_INDEX, GA_INDEX, NV_INDEX, PA_INDEX]
-let timestamp
+let fetchyTimestamp, timestamp
 const reeeeee = {
   3: 0,
   10: 0,
@@ -21,14 +21,29 @@ export default function Home () {
     if (restored && restored?.timestamp) {
       setResults(restored.rows)
       timestamp = restored.timestamp
+      fetchyTimestamp = restored.lastFetchTimestamp
       setNewBatchTimestamp(restored.timestamp)
       setLastFetchTimestamp(restored.lastFetchTimestamp)
     }
 
-    fetchy()
+    if (Date.now() - fetchyTimestamp > 60000 || !fetchyTimestamp) {
+      fetchy()
+    }
 
     if (intervalHold) clearInterval(intervalHold)
     intervalHold = setInterval(() => fetchy(), 60000)
+
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState === 'visible') {
+        if (Date.now() - fetchyTimestamp > 60000) {
+          fetchy()
+        }
+        if (intervalHold) clearInterval(intervalHold)
+        intervalHold = setInterval(() => fetchy(), 60000)
+      } else {
+        if (intervalHold) clearInterval(intervalHold)
+      }
+    })
   }, [])
   const [results, setResults] = useState([])
   const [newBatchTimestamp, setNewBatchTimestamp] = useState(0)
@@ -69,7 +84,8 @@ export default function Home () {
         setResults(rows)
         setNewBatchTimestamp(timestamp)
       }
-      setLastFetchTimestamp(Date.now())
+      fetchyTimestamp = Date.now()
+      setLastFetchTimestamp(fetchyTimestamp)
     }
   }
   return (
